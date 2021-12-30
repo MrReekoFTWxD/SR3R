@@ -4,7 +4,7 @@ int currentScroll = 1;
 int optCount = 0;
 int pedIndex = 0;
 bool bBox, bSnap, bName, bParachute, bGoldenGun, bGodMode, bInfiSprint, bEvilCars, bEvilCars2, bMasc, bZomb, bNearestReticle;
-
+bool menuOpen;
 
 void blankFunction() {}
 
@@ -34,8 +34,13 @@ void createOptions()
 
 void drawOptions()
 {
-	createOptions();
+	if (GetAsyncKeyState(VK_INSERT) & 1)
+		menuOpen = !menuOpen;
 
+	if (!menuOpen)
+		return;
+
+	createOptions();
 	
 	if (GetAsyncKeyState(VK_UP) & 1)
 	{
