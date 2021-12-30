@@ -11,6 +11,14 @@ Engine: Proprietary Engine Core Technology Group and the Havok physics engine
 4. Inject with any injector you want
 
 ![alt text](image/saintsrow_asgard.png)
+![alt text](image/saintsrow_asgard2.png)
+
+### ESP Color
+Purple: Your gang/friends
+Grey: Civilians
+Blue: Police
+Red: Enemy Gang & Zombies
+Green: Neutral Gang and not a regular civilian
 
 
 # Dependencies
