@@ -30,6 +30,19 @@ human_move_is_crouching_t human_move_is_crouching = human_move_is_crouching_t(Re
 get_tag_world_coords_t get_tag_world_coords = get_tag_world_coords_t(ResolveImport() + 0x4D0020);
 animlib_find_bone_by_name_t animlib_find_bone_by_name = animlib_find_bone_by_name_t(ResolveImport() + 0x7DB1F0);
 game_is_paused_t game_is_paused = game_is_paused_t(ResolveImport() + 0x2E2730);
+vm_matrix34_init_t vm_matrix34_init = vm_matrix34_init_t(ResolveImport() + 0x489D0);
+human_is_ally_t human_is_ally = human_is_ally_t(ResolveImport() + 0x4D3810);
+human_is_law_enforcement_t human_is_law_enforcement = human_is_law_enforcement_t(ResolveImport() + 0x4D3C30);
+human_is_gang_member_t human_is_gang_member = human_is_gang_member_t(ResolveImport() + 0x4D3B40);
+human_is_civilian_t human_is_civilian = human_is_civilian_t(ResolveImport() + 0x4D3990);
+human_is_enemy_gang_t human_is_enemy_gang = human_is_enemy_gang_t(ResolveImport() + 0x4D3B10);
+human_get_height_as_float_t human_get_height_as_float = human_get_height_as_float_t(ResolveImport() + 0x4D3170);
+human_get_height_t human_get_height = human_get_height_t(ResolveImport() + 0x4D3110);
+camera_set_orient_t camera_set_orient = camera_set_orient_t(ResolveImport() + 0xE3A90);
+animlib_find_character_bone_t animlib_find_character_bone = animlib_find_character_bone_t(ResolveImport() + 0x7DB210);
+get_anim_instance_manager_from_handle_t get_anim_instance_manager_from_handle = get_anim_instance_manager_from_handle_t(ResolveImport() + 0x7DFE00);
+anim_instance_get_tag_world_coords_t anim_instance_get_tag_world_coords = anim_instance_get_tag_world_coords_t(ResolveImport() + 0x7F6FC0);
+camera_tracky_move_t camera_tracky_move = camera_tracky_move_t(ResolveImport() + 0xFB760);
 
 
 
@@ -78,19 +91,27 @@ fl_vector AnglesToForward(fl_vector origin, vm_vector Angles, float distance)
     return Final;
 }
 
-//Currently crashes but not everytime, need to look into animlib_get_tag_world_coords more when I have time
-vm_vector* get_tag_pos(human* _this, vm_vector* result, vm_matrix34* head_orient)
+
+/*
+
+Exception thrown at 0x00007FF67E697088 in SRTTR.exe: 0xC0000005: Access violation reading location 0xFFFFFFFFFFFFFFFF.
+    - Figure out whats causing read violation
+        - Thinks it has todo with either matrices or base
+*/
+void get_tag_pos(human* _this, vm_vector* results)
 {
-    vm_vector basePos;
+    fl_matrix43* matrices = new fl_matrix43();
+    vm_matrix34 base = vm_matrix34();
+    vm_matrix34 head_orient = vm_matrix34();
+    vm_vector tmp;
 
-    int bone = _this->char_info->left_hip_bone_index;
-        if (get_tag_world_coords(_this, &bone, result, 0, &_this->m_pos, &_this->m_orient))
-            return result;
+    if (_this->char_info && _this->char_info->head_bone_index != -1 && _this->char_inst != 0 && GetNodeId(_this->char_inst->vp) != -1 && animlib_get_instanced_model_matrices(_this->char_inst->aim_handle, &matrices))
+    {
+        vm_matrix34_init(&head_orient, &_this->m_orient);
 
-
-        animlib_get_tag_world_coords(GetNodeId(_this->char_inst->vp), animlib_find_bone_by_name(_this->char_info->character_rig, "spine"), &basePos, head_orient, result, 0);
-
-    return result;
+        auto bp = animlib_find_character_bone(GetNodeId(_this->char_inst->vp), "pelvis");
+        get_tag_world_coords(_this, &bp, results, 0, &_this->m_pos, &_this->m_orient);
+    }
 }
 
 void BoundingBox(float x, float y, float width, float height, const vec4_t color, float thickness)

@@ -3,7 +3,7 @@
 int currentScroll = 1;
 int optCount = 0;
 int pedIndex = 0;
-bool bBox, bSnap, bName, bParachute, bGoldenGun, bGodMode, bInfiSprint, bEvilCars, bEvilCars2, bMasc, bZomb;
+bool bBox, bSnap, bName, bParachute, bGoldenGun, bGodMode, bInfiSprint, bEvilCars, bEvilCars2, bMasc, bZomb, bNearestReticle;
 
 
 void blankFunction() {}
@@ -19,6 +19,7 @@ void createOptions()
 	MenuItem(new Option("ASGARD", optCount++, std::bind(blankFunction)));
 	MenuItem(new Option("ESP BOX", optCount++, &bBox));
 	MenuItem(new Option("ESP SNAPLINES", optCount++, &bSnap));
+	MenuItem(new Option("ESP Nearest to Reticle", optCount++, &bNearestReticle));
 	MenuItem(new Option("ESP NAMES", optCount++, &bName));
 	MenuItem(new Option("Parachute Launch", optCount++, &bParachute));
 	MenuItem(new Option("Golden Gun", optCount++, &bGoldenGun));

@@ -21,6 +21,7 @@ void parachuteLaunch()
     }
 }
 
+
 void hud_render()
 {
     if (game_is_paused())
